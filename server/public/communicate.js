@@ -57,7 +57,7 @@ const sendRequest = async (program, message) => {
     _pushLog(requestToBeSend);
 
     try {
-        const response = await _sendRawRequest(requestToBeSend);
+        const response = JSON.parse(await _sendRawRequest(requestToBeSend));
         _pushLog(response);
         return response;
     }

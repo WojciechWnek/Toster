@@ -1,5 +1,6 @@
 <html>
   <head>
+    <title>Mózg</title>
     <script type="text/javascript" src="public/communicate.js">
     <script type="text/javascript">
         sendRequest("Hi man").then((r) => {console.log(r)});
@@ -9,8 +10,7 @@
     <h1>Chat</h1>
     <div>
       <input id="message" placeholder="Message">
-      <button id="send" onclick="sendRequest('Echo program', JSON.parse(document.getElementById('message').value))" >Send</button>
-
+      <button id="send" onclick="sendRequest('Echo program', JSON.parse(document.getElementById('message').value)).then((v)=>{ console.log(v) })" >Send</button>
     </div>
     <div id="messages">
     </div>

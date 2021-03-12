@@ -3,5 +3,10 @@
         "Name": "Echo program",
         "Program": "sh",
         "Path": "echo/echo.sh"
-    }   
+    },
+    {
+        "Name": "Python repl",
+        "Program": "python",
+        "Path": "python-repl/repl.py"
+    }
 ]
