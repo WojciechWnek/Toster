@@ -10,6 +10,7 @@
     "Toster",
     "Kasztan"
   ],
+  "type": "module",
   "author": "",
   "license": "MIT",
   "dependencies": {

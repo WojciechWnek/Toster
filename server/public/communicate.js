@@ -19,8 +19,8 @@ const _pushLog = (r) => {
         data: r
     });
 
-    if (logs.length > 20) {
-        logs.shift();
+    if (_logs.length > 20) {
+        _logs.shift();
     }
 }
 

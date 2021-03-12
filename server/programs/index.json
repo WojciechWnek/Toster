@@ -1,0 +1,7 @@
+[
+    {
+        "Name": "Echo program",
+        "Program": "sh",
+        "Path": "echo/echo.sh"
+    }   
+]

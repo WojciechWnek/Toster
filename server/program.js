@@ -36,12 +36,12 @@ export default class Program extends EventEmmiter {
             }
 
             const str = this._data.toString('utf8');
-            console.log(str);
             try {
                 const parsedResult = JSON.parse(str);
+                this._data = null;
                 this.emit("data", parsedResult);
-                // Clear current this._data and end function
-                this._data = null; 
+                // Clear current this._data and end function 
+                this.processReference.stdout.clearData();
                 return;
             }
             catch {
@@ -56,13 +56,17 @@ export default class Program extends EventEmmiter {
         this._data = null;
     }
 
+    getName() {
+        return this.formalName;
+    }
+
     send(request) {
         let output = null;
         if (typeof request === "object") // I assume this one as object
             output = Buffer.from(JSON.stringify(request) + "\n");
         else // I assume this one as string
             throw "Requst must be an object";
-        
+
         this.processReference.stdin.write(output);
     }
 }
