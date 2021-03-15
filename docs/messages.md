@@ -4,7 +4,7 @@ Message is an [json](https://en.wikipedia.org/wiki/JSON) object that is send bet
 
 > Example json objects may contain comments (text after `//`), although it is important **not** to use comments when communicating as it is not part of the standard.
 ## Overview of how transmitted message looks in general
-```json
+```javascript
 {
 	// Always required
 	"type": "request or response or info", 
