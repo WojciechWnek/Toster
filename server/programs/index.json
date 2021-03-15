@@ -2,11 +2,13 @@
     {
         "Name": "Echo program",
         "Program": "sh",
-        "Path": "echo/echo.sh"
+        "Path": "echo/echo.sh",
+        "Static" : "echo/"
     },
     {
         "Name": "Python repl",
         "Program": "python",
-        "Path": "python-repl/repl.py"
+        "Path": "python-repl/repl.py",
+        "Static" : "python-repl/"
     }
 ]

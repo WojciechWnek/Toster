@@ -5,6 +5,11 @@
 # Output code sets success and result field.
 # Json data needs to be newline terminated.
 
+# TODO: This needs complete rework, as currently it breaks
+#       when fnction print is being runned. This program should
+#       spawn antoher process and communiacte with it.
+#       This would potentially allow this to use another repl.
+
 import json
 
 while True:

@@ -23,7 +23,9 @@ export default class Program extends EventEmmiter {
 
         this._data = null; // Create empty buffer
 
+        let timeoutHandler = null;
         this.processReference.stdout.on("data", (chunk) => {
+            clearTimeout(timeoutHandler);
             if (this._data === null) {
                 this._data = chunk;
             }
@@ -46,6 +48,11 @@ export default class Program extends EventEmmiter {
             }
             catch {
                 // If couldn't be parsed then wait more
+                timeoutHandler = setTimeout(() => {
+                    this._data = null;
+                    // Error
+                    this.emit("data", { success: false });
+                }, 100);
             };
         });
     }
