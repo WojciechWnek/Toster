@@ -1,5 +1,5 @@
 # Server related ignores
 server/node_modules
 server/package-lock.json
-
+.obsidian
 
