@@ -2,14 +2,88 @@
 //
 // -----
 //
-// This file provides simple function:
-// sendRequst(program, msg)
-// All it does is sents it over websocket 
-// and returns response or throws error
+// This files contains implementation of
+// client side websocket communiaction as
+// well as its logs.
+
+
+// 
+// Public functions and variables
+//
+
+
+const getLogs = () => {
+    return _logs;
+}
+
+const sendRequest = (program, message) => {
+    return new Promise(async (resolve, reject) => {
+        if (typeof(message) !== "object") return reject({
+            error: true,
+            msg: "Message is not an object"
+        });
+
+        const id = await _getUniqueId();
+
+        const requestToBeSend = {
+            type: "request",
+            id: id,
+            program: program,
+            msg: message
+        }; 
+
+        _pushLog(requestToBeSend);
+
+        _ws.onmessage = (msg) => {
+            try {
+                const message = JSON.parse(msg.data);
+                if (message.id === id) {
+                    resolve(message);
+                    _pushLog(message);
+                }
+            }   
+            catch {
+            }
+        };
+
+        _ws.onerror = (err) => {
+            console.error(err);
+        }
+
+        setTimeout(() => {
+            reject({ error: true, msg: "Timeout" });
+        }, _communicationTimeout);
+
+        _ws.send(JSON.stringify(requestToBeSend));
+    });
+}
+
+//
+// Private functions and variables
+//
 
 
 const _ws = new WebSocket('ws://localhost:8000');
 const _communicationTimeout = 1000;
+
+const _getUniqueId = () => {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.responseType = "text";
+        xhr.onload = () => {
+            const id = parseInt(xhr.response);
+            resolve(id);
+        };
+
+        xhr.onerror = (e) => {
+            console.error(e);
+            reject(e);
+        };
+
+        xhr.open("GET", "api/id");
+        xhr.send();   
+    });
+};
 
 const _logs = [];
 
@@ -38,30 +112,3 @@ const _sendRawRequest = (req) => {
     });
 }
 
-const getLogs = () => {
-    return _logs;
-}
-
-const sendRequest = async (program, message) => {
-    if (typeof(message) != "object") return {
-        error: true,
-        msg: "Message is not an object"
-    };
-
-    const requestToBeSend = {
-        type: "request",
-        "program": program,
-        msg: message
-    }; 
-
-    _pushLog(requestToBeSend);
-
-    try {
-        const response = JSON.parse(await _sendRawRequest(requestToBeSend));
-        _pushLog(response);
-        return response;
-    }
-    catch (err) {
-        return err; 
-    }
-}

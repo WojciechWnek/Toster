@@ -27,6 +27,7 @@ app.get("/", (req, res, next) => {
     res.sendFile(join(__dirname, "public/index.html"))
 });
 
+// Load programs from programs/index.json
 readFile(join(__dirname, "programs/index.json"), (err, data) => {
     if (err) {
         console.error("No programs were provided to the server:");
@@ -52,9 +53,6 @@ readFile(join(__dirname, "programs/index.json"), (err, data) => {
 
             app.use("/" + individualProgram.Name.replace(" ", "%20") , staticProgramData);
 
-            console.log("/" + individualProgram.Name.replace(" ", "%20"));
-            console.log( join(__dirname, "programs", individualProgram.Static));
-
             programsList.push(p);
         }
     }
@@ -65,6 +63,7 @@ readFile(join(__dirname, "programs/index.json"), (err, data) => {
     }
 });
 
+// Start websocket server
 const wsServer = new Server({
     port: 8000
 });
@@ -85,7 +84,7 @@ wsServer.on("connection", (currentSocket) => {
                 prog.clearData();
                 currentSocket.send(JSON.stringify(d));
             });        
-            prog.send(msg.msg);
+            prog.send(msg);
         }
     });
 
@@ -95,6 +94,13 @@ wsServer.on("connection", (currentSocket) => {
     });
 });
 
+// TODO: Move whole api to another file
+let id = 0;
+app.get("/api/id", (req, res , next) => {
+    res.contentType = "text";
+    res.end(id.toString());
+    id++;
+});
 
 app.listen(PORT, () => {
     console.log(`Thinking on port ${PORT}`);
