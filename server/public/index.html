@@ -10,8 +10,12 @@
   <body>
     <h1>Chat</h1>
     <div>
-      <input id="message" placeholder="Message">
-      <button id="send" onclick="sendRequest('Echo program', JSON.parse(document.getElementById('message').value)).then((v)=>{ console.log(v) })" >Send</button>
+      <h2> Communiaction tester </h2>
+      <input id="programNameId" placeholder="Program name">
+      <input id="requestId" placeholder="Request">
+      <button id="send" 
+          onclick="const pN = document.getElementById('programNameId').value; sendRequest(pN, JSON.parse(document.getElementById('requestId').value)).then((v)=>{ console.log(v) })" >
+          Send</button>
     </div>
     <div id="messages">
     </div>

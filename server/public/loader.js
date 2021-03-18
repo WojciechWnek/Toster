@@ -1,32 +1,53 @@
-const programs = [ "Echo%20program",  "Python%20repl" ]; // This should be dynamically loaded
+const loadPrograms = () => {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.responseType = "text/json";
+
+        xhr.onload = () => {
+            resolve(JSON.parse(xhr.response));
+        };
+
+        xhr.onerror = (e) => {
+            console.error(e);
+            reject([]);
+        }
+        
+        xhr.open("GET", "/api/programs");
+        xhr.send();
+    });
+};
 
 window.onload = () => {
-    const xhr = new XMLHttpRequest();
-    xhr.responseType = "text/html";
-    const pc = document.getElementById("programsContainer");
+    loadPrograms().then((programs) => {
+        const pc = document.getElementById("programsContainer");
 
-    xhr.onload = () => {
-        const el = document.createElement("div");
-        el.innerHTML = xhr.response;
-        pc.appendChild(el);
+        // TODO: Consider if iframe is not better
+        const xhr = new XMLHttpRequest();
+        xhr.responseType = "text/html";
 
-        if (programs.length > 0) {
-            xhr.open("GET", programs.shift() + "/" + "index.html");
-            xhr.send();
+        xhr.onload = () => {
+            const el = document.createElement("div");
+            el.innerHTML = xhr.response;
+            pc.appendChild(el);
+
+            if (programs.length > 0) {
+                xhr.open("GET", programs.shift() + "/" + "index.html");
+                xhr.send();
+            }
+        };
+
+        xhr.onerror = (e) => {
+            console.error(e);
+
+            if (programs.length > 0) {
+                xhr.open("GET", programs.shift() + "/" + "index.html");
+                xhr.send();
+            }
         }
-    };
-
-    xhr.onerror = (e) => {
-        console.error(e);
-
-        if (programs.length > 0) {
-            xhr.open("GET", programs.shift() + "/" + "index.html");
-            xhr.send();
-        }
-    }
-    
-    xhr.open("GET", programs.shift() + "/" + "index.html");
-    xhr.send();
+        
+        xhr.open("GET", programs.shift() + "/" + "index.html");
+        xhr.send();
+    });
 }
 
 

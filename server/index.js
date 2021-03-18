@@ -102,6 +102,10 @@ app.get("/api/id", (req, res , next) => {
     id++;
 });
 
+app.get("/api/programs", (req, res) => {
+    res.json([ "Python%20repl" ]);
+});
+
 app.listen(PORT, () => {
     console.log(`Thinking on port ${PORT}`);
 })
