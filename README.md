@@ -9,7 +9,7 @@ Link to docs explaining how this project works and how to hack on it is [here](d
 ## Starting up the server
 
 This project is intended to be runned on raspberry pi with Gnu/Linux.
-For development is is not a problem not to run it on some other unix based machine, although running it under windows may raise some problems (not tested yet).
+For development is is not a problem to run it on some other unix based machine, although running it under Windows may raise some problems (not tested yet).
 
 ### Requirements
 - Stable or nightly build of `node.js` with `npm`.
