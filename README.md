@@ -25,7 +25,7 @@ git clone https://github.com/Mazurel/Toster.git
 # Cd into directory
 cd Toster
 # Download node modules
-cd server && npm update
+cd server && npm run build
 ```
 
 If you want to mess around with loaded programs you may also want to modify `programs/index.json` 
