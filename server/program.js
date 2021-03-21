@@ -51,7 +51,7 @@ export default class Program extends EventEmmiter {
                 timeoutHandler = setTimeout(() => {
                     this._data = null;
                     // Error
-                    this.emit("data", { success: false });
+                    //this.emit("data", { success: false });
                 }, 100);
             };
         });
