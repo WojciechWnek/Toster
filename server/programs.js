@@ -25,9 +25,11 @@ class Programs extends EventEmmiter {
         this.programsList = programsList; 
 
         for (const program of programsList) {
+            console.log(program.getName());
             program.on("data", (r) => {
                 if (r !== undefined && r.type === "info") {
-                    console.log("Transmitted info: ", t);
+                    r.program = program.getName();
+                    this.emit("info", r);
                 }
             });
         }
@@ -46,6 +48,10 @@ class Programs extends EventEmmiter {
 
         return searchResult[0]; 
     }
+
+    getAllNames() {
+        return this.programsList.map((p) => p.getName());
+    }
 };
 
 export default function startPrograms(app) {
@@ -63,6 +69,8 @@ export default function startPrograms(app) {
             try {
                 const programsData = JSON.parse(str);
                 for (const individualProgram of programsData) {
+                    if (individualProgram.Enable === false) continue;
+
                     const p = new Program(individualProgram.Name, 
                                           individualProgram.Program, 
                                           [ join(__dirname, "programs", individualProgram.Path) ]); 

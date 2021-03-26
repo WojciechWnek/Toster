@@ -33,38 +33,55 @@ const sendRequest = (program, message) => {
         }; 
 
         _pushLog(requestToBeSend);
-
-        _ws.onmessage = (msg) => {
+        
+        const messageHandler = (msg) => {
             try {
                 const message = JSON.parse(msg.data);
                 if (message.id === id) {
                     resolve(message);
                     _pushLog(message);
+                    _ws.removeEventListener("message", messageHandler);
                 }
             }   
             catch {
             }
         };
 
-        _ws.onerror = (err) => {
-            console.error(err);
-        }
+        _ws.addEventListener("message", messageHandler);
 
         setTimeout(() => {
             reject({ error: true, msg: "Timeout" });
+            _ws.removeEventListener("message", messageHandler);
         }, _communicationTimeout);
 
         _ws.send(JSON.stringify(requestToBeSend));
     });
 }
 
+const registerInfoHandler = (fn) => {
+    _ws.addEventListener("message", (msg) => {
+        try {
+            const message = JSON.parse(msg.data);
+            if (message.type === "info") {
+                fn(message);
+                _pushLog(message);
+            }
+        }   
+        catch {
+        }
+    });
+};
+
 //
 // Private functions and variables
 //
 
-
 const _ws = new WebSocket('ws://localhost:8000');
 const _communicationTimeout = 1000;
+
+_ws.onerror = (err) => {
+    console.error(err);
+}
 
 const _getUniqueId = () => {
     return new Promise((resolve, reject) => {
@@ -80,7 +97,7 @@ const _getUniqueId = () => {
             reject(e);
         };
 
-        xhr.open("GET", "api/id");
+        xhr.open("GET", "/api/id");
         xhr.send();   
     });
 };
