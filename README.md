@@ -58,9 +58,13 @@ An object that represent program looks currently like that:
 Field explanation:
 
 Name - A formal name for you program, must Unique.
+
 Program - A Program that executes you script like `python` or `sh`.
+
 Path - A path to script that will be executed by the `Program` field.
+
 Static - A path to folder with static html content that will be served for the program. The folder should contain index.html file.
+
 Enable - This field is optional, it resolves to `true` by default.
 
 *After adding custom program, remember to restart server !*
