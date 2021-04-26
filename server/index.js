@@ -22,7 +22,7 @@ const programsList = [];
 const __filename = import.meta.url.slice(7);
 const __dirname = dirname(__filename);
 
-const PORT = 3000;
+const PORT = 1337;
 
 const staticApp = express.static("public", {
     extensions: [ "html", "js", "css" ]
@@ -53,6 +53,8 @@ wsServer.on("connection", (currentSocket) => {
         const pName = msg.program;
         const prog = programs.findByName(pName);
         if (prog !== null) {
+            if (prog.isClosed()) return;
+
             const myId = msg.id;
 
             // Send response back only if id is valid and 
@@ -63,6 +65,9 @@ wsServer.on("connection", (currentSocket) => {
                     currentSocket.send(JSON.stringify(d));
                     prog.removeListener("data", sendResponse);
                 }
+                setTimeout(() => {
+                    prog.removeListener("data", sendResponse);
+                }, 1000);
             });        
             prog.send(msg);
         }
@@ -91,6 +96,19 @@ app.get("/api/id", (req, res , next) => {
 
 app.get("/api/programs", (req, res) => {
     res.json(programs.getAllNames());
+});
+
+app.post("/api/program/restart", (req, res) =>  {
+    const programName = req.query.name;
+    if (typeof programName === "string") {
+        const prog = programs.findByName(programName);
+        if (prog !== null) {
+            prog.restart();
+            res.json({ success: true });
+            return;
+        }
+    }
+    res.json({ success: false });
 });
 
 app.listen(PORT, () => {

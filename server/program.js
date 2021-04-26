@@ -9,17 +9,22 @@ import { spawn } from 'child_process';
 import EventEmmiter from 'events';
 
 export default class Program extends EventEmmiter {
-    constructor(formalName, cmd, args = []) {
+    constructor(formalName, cmd, args = [], settings = {}) {
         super();
         this.formalName = formalName;
         this.cmd = cmd;
         this.cargs = args;
         this.processReference = null;
         this._data = null;
+        this.settings = settings;
+        this.setMaxListeners(30);
     }
 
     run() {
-        this.processReference = spawn(this.cmd, this.cargs);
+        this.processReference = spawn(this.cmd, this.cargs, 
+            {
+                cwd : this.settings.pwd
+            });
 
         this._data = null; // Create empty buffer
 
@@ -61,9 +66,15 @@ export default class Program extends EventEmmiter {
         });
 
         this.processReference.on("close", (code) => {
-            console.warn(`${this.formalName} exitted with error code ${code}`);
             // Restart app after it crashes without blocking event loop
-            // setImmediate(this.run);
+            if (this.settings.autoRestart === true) {
+                setImmediate(() => {
+                    this.run();
+                });
+            }
+            else {
+                this.closed = true;
+            }
         });
 
         this.processReference.on("error", (err) => {
@@ -89,5 +100,25 @@ export default class Program extends EventEmmiter {
             throw "Requst must be an object";
 
         this.processReference.stdin.write(output);
+    }
+
+    // TODO: Make killing smarter: firstly sigkill, then sigterm 
+    //       like systemd does it. Also test how it works.
+
+    close() {
+        this.processReference.kill(); 
+        this.settings.autoRestart = false;
+    }
+
+    restart() {
+        this.processReference.once("close", () => {
+            this.run();
+        });
+
+        this.processReference.kill();
+    }
+
+    isClosed() {
+        return this.closed; 
     }
 }

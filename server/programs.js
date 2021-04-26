@@ -69,7 +69,11 @@ export default function startPrograms(app) {
 
                     const p = new Program(individualProgram.Name, 
                                           individualProgram.Program, 
-                                          [ join(__dirname, "programs", individualProgram.Path) ]); 
+                                          [ join(__dirname, "programs", individualProgram.Path) ],
+                                          {
+                                            autoRestart: individualProgram.AutoRestart,
+                                            pwd: individualProgram.pwd === undefined ? null : join(__dirname, "programs", individualProgram.pwd)
+                                          }); 
                     
                     p.run();
                     // Run static routers with data associated with program
