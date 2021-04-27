@@ -5,16 +5,16 @@ name: Node.js Server tests
 on:
   push:
     paths:
-    - 'server/**'
+    - 'rpi/server/**'
     branches: [ main, devel ]
   pull_request:
     paths:
-    - 'server/**'
+    - 'rpi/server/**'
     branches: [ main, devel ]
     
 defaults:
   run:
-    working-directory: ./server
+    working-directory: ./rpi/server
   
 jobs:
   build:
