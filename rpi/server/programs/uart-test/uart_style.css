@@ -1,0 +1,11 @@
+body{
+    margin: 0 2rem;
+}
+div{
+    width: 100%;
+}
+#uart_form{
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+}
