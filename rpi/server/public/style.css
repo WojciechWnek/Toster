@@ -86,6 +86,14 @@ footer{
 footer p{
     position: relative;
     text-align: center;
+    
+}
+footer div{
+    flex-grow: 1;
+    flex-basis: 0;
+    padding: 0 1rem;
+    display: grid;
+    place-items: center;
 }
 
 footer div p i,
@@ -137,4 +145,70 @@ footer div p span{
   border: var(--arrow-size) solid transparent;
   border-top-color: var(--tooltip-color);
   transform-origin: top center;
+}
+
+@media screen and (max-width: 1000px){
+    body{
+        font-size: 90%;
+    }
+    footer{
+       display: grid;
+       grid-template-rows: 2fr, 1fr;
+       grid-template-columns: repeat(2, 1fr);
+       padding-top: 1rem;
+       padding-bottom: 0%;
+    }
+    #email{
+        grid-column: 1;
+        grid-row: 1;
+    }
+    #address{
+        grid-column: 2;
+        grid-row: 1;
+    }
+    #copyrights{
+        grid-row: 2;
+        grid-column: 1/-1;
+    }
+}
+
+@media screen and (max-width: 710px){
+    body{
+        font-size: 80%;
+    }
+    footer{
+        display: flex;
+        padding-top: 1rem;
+        padding-bottom: 0%;
+        flex-direction: column-reverse;
+     }
+     footer div{
+         padding: 0.25rem 0;
+     }
+     #communication_form{
+         display: grid;
+         grid-template-columns: 1fr 1fr;
+         grid-template-rows: 1fr 1fr;
+     }
+     #programNameId{
+         grid-column: 1;
+         grid-row: 1;
+     }
+     #requestId{
+        grid-column: 2;
+        grid-row: 1;
+     }
+     #communication_form button{
+         grid-column: 2;
+         grid-row: 2;
+     }
+     input{
+         width: 90%;
+         margin: 5%;
+     }
+     button{
+         margin:5%;
+         width: 50%;
+         justify-self: end;
+     }
 }

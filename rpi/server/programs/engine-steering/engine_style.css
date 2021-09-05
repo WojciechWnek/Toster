@@ -62,3 +62,9 @@ a:active{
   border-top-color: var(--tooltip-color);
   transform-origin: top center;
 }
+
+@media screen and (max-width: 710px){
+  .tooltip::before {
+    font-size: 1rem;
+  }
+}

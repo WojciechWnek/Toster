@@ -16,4 +16,18 @@ button{
 #api_form div{
     display: flex;
     justify-content: center;
+    max-width: 100%;
+}
+
+#rResponser,
+#iLogs{
+    font-size: 85%;
+}
+
+@media screen and (max-width: 710px){
+    button{
+        width: 40%;
+        padding: 1rem;
+        font-size: 120%;
+    }
 }
